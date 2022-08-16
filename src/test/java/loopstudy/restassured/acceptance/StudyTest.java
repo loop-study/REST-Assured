@@ -1,6 +1,13 @@
 package loopstudy.restassured.acceptance;
 
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class StudyTest extends AcceptanceTest {
 
@@ -10,7 +17,15 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_생성() {
+        ExtractableResponse<Response> createResponse = RestAssured
+                .given().log().all()
+                .param("topic", "REST-Assured")
+                .when()
+                .post("/study")
+                .then().log().all()
+                .extract();
 
+        assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     /**
@@ -20,7 +35,11 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_조회() {
-
+        ExtractableResponse<Response> getStudy = RestAssured
+                .when()
+                .get("/study")
+                .then().log().all()
+                .extract();
     }
 
     /**
@@ -30,7 +49,13 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_수정() {
-
+        ExtractableResponse<Response> updateStudy = RestAssured
+                .given().log().all()
+                .formParam("topic", "REST-Assured")
+                .when()
+                .put("/study")
+                .then().log().all()
+                .extract();
     }
 
 
@@ -41,6 +66,10 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_삭제() {
-
+        ExtractableResponse<Response> deleteStudy = RestAssured
+                .when()
+                .delete("/study/1")
+                .then().log().all()
+                .extract();
     }
 }
