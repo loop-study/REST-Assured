@@ -5,6 +5,10 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -17,15 +21,27 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_생성() {
-        ExtractableResponse<Response> createResponse = RestAssured
-                .given().log().all()
-                .param("topic", "REST-Assured")
+        String topic = "REST-Assured";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("topic", topic);
+
+        ExtractableResponse<Response> createResponse = RestAssured.given().log().all()
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .post("/study")
                 .then().log().all()
                 .extract();
 
-        assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertAll(
+                () -> assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(getTopic(createResponse)).isEqualTo(topic)
+        );
+    }
+
+    private String getTopic(ExtractableResponse<Response> createResponse) {
+        return createResponse.jsonPath().get("topic");
     }
 
     /**
