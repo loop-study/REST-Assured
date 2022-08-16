@@ -5,6 +5,9 @@ import loopstudy.restassured.application.dto.StudyResponse;
 import loopstudy.restassured.domain.Study;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StudyService {
     private StudyRepository repository;
@@ -16,6 +19,12 @@ public class StudyService {
     public StudyResponse saveStudy(StudyRequest studyRequest) {
         Study study = repository.save(new Study(studyRequest.getTopic()));
         return toResponse(study);
+    }
+
+    public List<StudyResponse> findAll() {
+        return repository.findAll().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
     private StudyResponse toResponse(Study study) {
