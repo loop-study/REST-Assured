@@ -40,10 +40,6 @@ public class StudyTest extends AcceptanceTest {
         );
     }
 
-    private String getTopic(ExtractableResponse<Response> createResponse) {
-        return createResponse.jsonPath().get("topic");
-    }
-
     /**
      * Given 스터디 생성 요청을 하고
      * When 스터디 조회 요청을 하면
@@ -51,11 +47,28 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_조회() {
+        String topic = "REST-Assured";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("topic", topic);
+
+        RestAssured.given().log().all()
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/study")
+                .then().log().all();
+
         ExtractableResponse<Response> getStudy = RestAssured
                 .when()
                 .get("/study")
                 .then().log().all()
                 .extract();
+
+        assertAll(
+                () -> assertThat(getStudy.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(getStudy.jsonPath().getList("topic")).contains(topic)
+        );
     }
 
     /**
@@ -87,5 +100,9 @@ public class StudyTest extends AcceptanceTest {
                 .delete("/study/1")
                 .then().log().all()
                 .extract();
+    }
+
+    private String getTopic(ExtractableResponse<Response> createResponse) {
+        return createResponse.jsonPath().get("topic");
     }
 }
