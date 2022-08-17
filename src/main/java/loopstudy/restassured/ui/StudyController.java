@@ -36,4 +36,10 @@ public class StudyController {
         studyService.updateStudy(id, studyRequest);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<StudyResponse> deleteStudy(@PathVariable Integer id) {
+        studyService.removeStudy(id);
+        return ResponseEntity.noContent().build();
+    }
 }

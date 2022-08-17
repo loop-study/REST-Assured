@@ -32,6 +32,10 @@ public class StudyService {
         study.changeTopic(studyRequest.getTopic());
     }
 
+    public void removeStudy(Integer id) {
+        repository.deleteById(id);
+    }
+
     private StudyResponse toResponse(Study study) {
         return new StudyResponse(
                     study.getId(),

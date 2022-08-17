@@ -25,4 +25,8 @@ public class StudyRepository {
     public Study findById(Integer id) {
         return studyMap.get(id);
     }
+
+    public void deleteById(Integer id) {
+        studyMap.remove(id);
+    }
 }
