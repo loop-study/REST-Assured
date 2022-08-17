@@ -78,13 +78,32 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_수정() {
-        ExtractableResponse<Response> updateStudy = RestAssured
-                .given().log().all()
-                .formParam("topic", "REST-Assured")
+        String topic = "REST-Assured";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("topic", topic);
+
+        ExtractableResponse<Response> create = RestAssured.given().log().all()
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .put("/study")
+                .post("/study")
                 .then().log().all()
                 .extract();
+
+        Map<String, Object> params2 = new HashMap<>();
+        params2.put("topic", "Acceptance");
+
+        ExtractableResponse<Response> updateStudy = RestAssured
+                .given().log().all()
+                .body(params2)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .put(create.header("Location"))
+                .then().log().all()
+                .extract();
+
+        assertThat(updateStudy.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
 

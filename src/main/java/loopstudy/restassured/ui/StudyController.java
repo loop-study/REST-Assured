@@ -29,4 +29,11 @@ public class StudyController {
     public ResponseEntity<List<StudyResponse>> showStudies() {
         return ResponseEntity.ok().body(studyService.findAll());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudyResponse> updateStudy(@PathVariable Integer id,
+                                                     @RequestBody StudyRequest studyRequest) {
+        studyService.updateStudy(id, studyRequest);
+        return ResponseEntity.noContent().build();
+    }
 }

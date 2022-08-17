@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 public class Study {
     private static Integer STUDY_NUMBER = 1;
-    private final Integer id;
-    private final String topic;
-    private final LocalDateTime createdDate;
-    private final LocalDateTime modifiedDate;
+    private Integer id;
+    private String topic;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
 
     public Study(String topic) {
         validationTopic(topic);
@@ -17,10 +17,10 @@ public class Study {
         this.modifiedDate = this.createdDate;
     }
 
-    private void validationTopic(String topic) {
-        if (topic == null) {
-            throw new IllegalArgumentException();
-        }
+    public void changeTopic(String topic) {
+        validationTopic(topic);
+        this.topic = topic;
+        this.modifiedDate = LocalDateTime.now();
     }
 
     public int getId() {
@@ -37,5 +37,11 @@ public class Study {
 
     public LocalDateTime getModifiedDate() {
         return modifiedDate;
+    }
+
+    private void validationTopic(String topic) {
+        if (topic == null) {
+            throw new IllegalArgumentException();
+        }
     }
 }

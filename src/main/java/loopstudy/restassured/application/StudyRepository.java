@@ -21,4 +21,8 @@ public class StudyRepository {
     public List<Study> findAll() {
         return new ArrayList<>(studyMap.values());
     }
+
+    public Study findById(Integer id) {
+        return studyMap.get(id);
+    }
 }

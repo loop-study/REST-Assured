@@ -27,6 +27,11 @@ public class StudyService {
                 .collect(Collectors.toList());
     }
 
+    public void updateStudy(Integer id, StudyRequest studyRequest) {
+        Study study = repository.findById(id);
+        study.changeTopic(studyRequest.getTopic());
+    }
+
     private StudyResponse toResponse(Study study) {
         return new StudyResponse(
                     study.getId(),
