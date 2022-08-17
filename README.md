@@ -1,7 +1,6 @@
 # REST-Assured
 ### 학습 목표
-- [] REST-Assured 개념
-- [] REST-Assured 사용 방법
+- [REST-Assured 개념 및 사용법](https://loopstudy.tistory.com/427)
 
 ### 학습용 인수 조건
 ```
@@ -106,12 +105,11 @@ Feature: 스터디 관리
 ```
 
 ### 학습을 위한 요구사항 
-- [] 스터디(study)를 생성한다. 
+- [x] 스터디(study)를 생성한다. 
   - [x] 주제(topic)을 가진다.
     - [x] 주제는 변경이 가능하다. 
-  - [] 스터디 목록을 확인할 수 있다.
-  - [] 스터디를 삭제할 수 있다.
-    - [] 모집중인 스터디만 삭제가 가능하다. 
+- [x] 스터디 목록을 확인할 수 있다.
+- [x] 스터디를 삭제할 수 있다.
 
 ### 참고  
 - [REST-Assured 문서](https://rest-assured.io)
