@@ -23,16 +23,7 @@ public class StudyTest extends AcceptanceTest {
     void 스터디_생성() {
         String topic = "REST-Assured";
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("topic", topic);
-
-        ExtractableResponse<Response> createResponse = RestAssured.given().log().all()
-                .body(params)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/study")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> createResponse = createStudy(topic);
 
         assertAll(
                 () -> assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
@@ -49,15 +40,7 @@ public class StudyTest extends AcceptanceTest {
     void 스터디_조회() {
         String topic = "REST-Assured";
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("topic", topic);
-
-        RestAssured.given().log().all()
-                .body(params)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/study")
-                .then().log().all();
+        createStudy(topic);
 
         ExtractableResponse<Response> getStudy = RestAssured
                 .when()
@@ -80,16 +63,7 @@ public class StudyTest extends AcceptanceTest {
     void 스터디_수정() {
         String topic = "REST-Assured";
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("topic", topic);
-
-        ExtractableResponse<Response> create = RestAssured.given().log().all()
-                .body(params)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/study")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> create = createStudy(topic);
 
         Map<String, Object> params2 = new HashMap<>();
         params2.put("topic", "Acceptance");
@@ -114,14 +88,33 @@ public class StudyTest extends AcceptanceTest {
      */
     @Test
     void 스터디_삭제() {
+        String topic = "REST-Assured";
+
+        ExtractableResponse<Response> create = createStudy(topic);
+
         ExtractableResponse<Response> deleteStudy = RestAssured
                 .when()
-                .delete("/study/1")
+                .delete(create.header("Location"))
                 .then().log().all()
                 .extract();
+
+        assertThat(deleteStudy.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     private String getTopic(ExtractableResponse<Response> createResponse) {
         return createResponse.jsonPath().get("topic");
+    }
+
+    private ExtractableResponse<Response> createStudy(String topic) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("topic", topic);
+
+        return RestAssured.given().log().all()
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/study")
+                .then().log().all()
+                .extract();
     }
 }
