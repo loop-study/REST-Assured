@@ -1,15 +1,14 @@
 package loopstudy.restassured.application;
 
-import loopstudy.restassured.application.dto.StudyResponse;
 import loopstudy.restassured.domain.Study;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Repository
 public class StudyRepository {
     private final Map<Integer, Study> studyMap = new HashMap<>();
 
